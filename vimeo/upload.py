@@ -17,6 +17,7 @@ class UploadVideoMixin(object):
 
     UPLOAD_ENDPOINT = '/me/videos'
     REPLACE_ENDPOINT = '{video_uri}/files'
+    EDIT_ENDPOINT = '{video_uri}'
 
     def upload(self, filename, upgrade_to_1080=False):
         """Upload the named file to Vimeo."""
@@ -36,6 +37,12 @@ class UploadVideoMixin(object):
 
         return self._perform_upload(filename, ticket)
 
+    def edit(self, video_uri, edit_dict):
+        uri = self.EDIT_ENDPOINT.format(video_uri=video_uri)
+        
+        ticket = self.patch(uri, data=edit_dict)
+        return ticket
+        
     def _perform_upload(self, filename, ticket):
         """Take an upload ticket and perform the actual upload."""
 
